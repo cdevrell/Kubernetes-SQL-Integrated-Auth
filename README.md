@@ -1,7 +1,7 @@
 # Kerberos Sidecar
 
 ## Purpose
-The purpose of this image is to provide a method of enabling Dotnet core applications running within Linux containers which are not joined to the domain to use integrated SQL authentication through Kerberos.
+The purpose of this image is to provide a method of enabling .Net Core applications running within Linux containers which are not joined to the domain to use integrated SQL authentication through Kerberos.
 
 ## Usage
 This image is designed to be run as a "sidecar" in a Kubernetes pod. This means that for each deployment of an app which requires integrated SQL authentication, this container will be deployed alongside it as a member of the same pod.
@@ -147,12 +147,12 @@ data:
 ~~~
 
 ## How it works
-The Kerberos Sidecar container is responsible for all the authentication against the DC using the provided username and password. First, the Kerberos sidecar container will create an encrypyted keytab file based on the username and password. This is then used to authenticate against the DC/KDC.
-The conatiner will then store the Kerberos authentication token in a pod-restricted location accessible to the app container running in the same pod.
+The Kerberos Sidecar container is responsible for all the authentication against the DC using the provided username and password. First, the Kerberos sidecar container will create an encrypted keytab file based on the username and password. This is then used to authenticate against the DC/KDC.
+The container will then store the Kerberos authentication token in a pod-restricted location accessible to the app container running in the same pod.
 
 Every 1 hour, the Kerberos Sidecar will reauthenticate against the DC and generate a new authentication token to ensure the authentication request does not expire.
 
-The app will then look in this location for the kerberos token and use this to authenticate against the SQL server.
+The app will then look in this location for the Kerberos token and use this to authenticate against the SQL server.
 
 The SQL server will query the DC using its SPN to verify its identity and grant access if authentication is successful.
 
