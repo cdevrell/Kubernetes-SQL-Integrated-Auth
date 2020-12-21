@@ -25,7 +25,7 @@ Within the connection string of the application, ensure `Integrated Security=SSP
 Sometimes this is handled by SQL automatically but in the event of the SQL Server service running as a domain account which does not have write permissions to its own user in AD, run the following command to manually create a SPN for this user.
 
 ~~~
-setspn -S MSSQLSvc/<FQDN of SQL Server Host> <sAMAccountName of SQL Server service account >
+setspn -S MSSQLSvc/<FQDN of SQL Server Host> <sAMAccountName of SQL Server service account>
 ~~~
 
 The SPN registers the SQL service running under that user with the directory and therefore enables SQL to authenticate over Kerberos rather than NTLM.
