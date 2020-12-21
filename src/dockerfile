@@ -1,0 +1,18 @@
+## Use Alpine as the base image
+FROM alpine:3.12
+
+## Enable the edge branch repository
+RUN sed -i -e 's/v[[:digit:]]\..*\//edge\//g' /etc/apk/repositories
+
+## Install Heimdal which includes the ktutil, ktinit, and ktlist programs.
+RUN apk update && apk add heimdal
+
+## Create an empty directory for the keytab file.
+RUN mkdir /krb5 && chmod 755 /krb5
+
+## Copy script and
+COPY generate_kerberos_token.sh /generate_kerberos_token.sh
+RUN chmod +x /generate_kerberos_token.sh
+
+## Run script on startup
+CMD [ "/generate_kerberos_token.sh" ]
